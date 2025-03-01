@@ -1,0 +1,231 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import useUserStore from '@/store/userStore';
+import { Box, Button, TextField, Modal, Tab, Tabs, Typography, IconButton, Snackbar } from '@mui/material';
+import { authUserAPI, regUserAPI } from '@/app/api/siteAPI';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {shallow} from "zustand/shallow";
+import Link from "next/link";
+import theme from "@/theme";
+
+const UserBlock = () => {
+
+	const id = useUserStore((state) => state.id);
+
+	const {  mail, name, check, logout } = useUserStore();
+	const [email, setEmail] = useState('');
+	const [pass, setPass] = useState('');
+
+	const [modalOpen, setModalOpen] = useState(false);
+	const [tabValue, setTabValue] = useState(0);
+	const [notification, setNotification] = useState('');
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+
+	useEffect(() => {
+		check();
+	}, []);
+
+	const handleSnackbarClose = () => setSnackbarOpen(false);
+
+	const handleAuth = async () => {
+		try {
+			const data = await authUserAPI({ email, password: pass });
+
+			if (data.token) {
+				localStorage.setItem('token', data.token);
+				setNotification('Успешно вошли в систему!');
+				setSnackbarOpen(true);
+				await check(); // Дожидаемся обновления пользователя
+				setModalOpen(false);
+			}
+		} catch (err) {
+			setNotification(err.response?.data?.error || 'Ошибка авторизации');
+			setSnackbarOpen(true);
+		}
+	};
+
+	const handleRegister = () => {
+		regUserAPI({ email, password: pass})
+			.then(data => {
+				setNotification('Регистрация успешна! Теперь вы можете авторизоваться.');
+				setSnackbarOpen(true);
+
+				if (data.token) {
+					localStorage.setItem('token', data.token);
+					setNotification('Успешно вошли в систему!');
+					setSnackbarOpen(true);
+					check();
+					setModalOpen(false)
+				}
+
+			})
+			.catch((err) => {
+				setNotification(err.response?.data?.error || 'Ошибка регистрации');
+				setSnackbarOpen(true);
+			});
+	};
+
+	return (
+		<div>
+			{id ? (
+				<>
+				<Link href="/user" passHref>
+					<IconButton  color="success">
+						<PersonIcon />
+					</IconButton>
+				</Link>
+					<IconButton  onClick={logout} color="error">
+						<LogoutIcon />
+					</IconButton>
+				</>
+
+			) : (
+				<>
+					<Button
+						variant="contained"
+						onClick={() => setModalOpen(true)}
+						sx={{
+							display: {xs: 'none', md: 'block'}
+						}}
+					>
+						<img  src="/imaga/people.svg" alt="ico" />
+						<Typography component="span" sx={{
+							ml: 1, color: 'white', fontSize: '16px', fontWeight: 'bold',
+						}}>Войти</Typography>
+					</Button>
+					<IconButton
+						onClick={() => setModalOpen(true)}
+						sx={{
+							display: {xs: 'block', md: 'none'}
+						}}
+					>
+						<Box component="img" sx={{height: '20px'}}  src="/imaga/people.svg" alt="ico"  />
+					</IconButton>
+
+
+				</>
+
+			)}
+
+			<Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+				<Box
+					sx={{
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						width: 500,
+						bgcolor: 'background.paper',
+						boxShadow: 24,
+						p: 4,
+						borderRadius: 2,
+					}}
+				>
+					<Tabs
+						value={tabValue}
+						onChange={(e, newValue) => setTabValue(newValue)}
+						centered
+						sx={{
+							"& .MuiTabs-indicator": {
+								display: "none", // Убираем подчеркивание
+							},
+							"& .MuiTab-root": {
+								color: "white", // Цвет неактивного таба
+								textTransform: "none", // Убираем все заглавные буквы
+								fontSize: "24px", // Размер шрифта 24px
+								fontWeight: "bolt", // Обычный вес шрифта
+								fontStyle: "normal", // Убираем курсив
+							},
+							"& .Mui-selected": {
+								color: theme.palette.primary.main,
+							},
+						}}
+					>
+						<Tab label="Авторизация" />
+						<Tab label="Регистрация" />
+					</Tabs>
+
+
+					{tabValue === 0 && (
+						<Box >
+							<Typography component="div" sx={{
+									fontSize: "24px",
+									fontWeight: "700",
+									fontStyle: "normal",
+								textAlign: "center", mb: 2
+							}}>
+
+								Вход
+							</Typography>
+							<TextField
+								variant="filled"
+								fullWidth
+								label="Email"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								sx={{ mb: 2 }}
+							/>
+							<TextField
+								variant="filled"
+								fullWidth
+								label="Пароль"
+								type="password"
+								value={pass}
+								onChange={(e) => setPass(e.target.value)}
+								sx={{ mb: 2 }}
+							/>
+							<Button fullWidth variant="contained" onClick={handleAuth} size="large">
+								Войти
+							</Button>
+						</Box>
+					)}
+
+					{tabValue === 1 && (
+						<Box >
+							<Typography component="div" sx={{
+								fontSize: "24px",
+								fontWeight: "700",
+								fontStyle: "normal",
+								textAlign: "center", mb: 2
+							}}>
+								Регистрация
+							</Typography>
+
+							<TextField
+								variant="filled"
+								fullWidth
+								label="Email"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								sx={{ mb: 2 }}
+							/>
+							<TextField
+								variant="filled"
+								fullWidth
+								label="Пароль"
+								type="password"
+								value={pass}
+								onChange={(e) => setPass(e.target.value)}
+								sx={{ mb: 2 }}
+							/>
+							<Button fullWidth variant="contained" onClick={handleRegister} size="large">
+								Зарегистрироваться
+							</Button>
+						</Box>
+					)}
+				</Box>
+			</Modal>
+			<Snackbar
+				open={snackbarOpen}
+				autoHideDuration={3000}
+				onClose={handleSnackbarClose}
+				message={notification}
+			/>
+		</div>
+	);
+};
+
+export default UserBlock;
