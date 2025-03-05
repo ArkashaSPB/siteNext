@@ -14,6 +14,12 @@ export const authUserAPI = async (massive) => {
 }
 
 
+export const getPassAPI = async (massive) => {
+	const {data} = await $host.patch(`users/auth`, massive)
+	return data
+}
+
+
 export const regUserAPI = async (massive) => {
 	const {data} = await $host.post(`users/reg`,massive)
 	return data
@@ -37,6 +43,8 @@ export const getOrderIdAPI = async (id) => {
 	const {data} = await $host.get(`users/orders/`+id)
 	return data
 }
+
+
 
 export const getOrderOneIdAPI = async (id) => {
 	const {data} = await $host.get(`goods/order/`+id)

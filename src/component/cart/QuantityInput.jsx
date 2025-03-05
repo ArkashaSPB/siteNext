@@ -38,7 +38,7 @@ const QuantityInput = ({ item, updateItemQuantity }) => {
 		<Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
 			<TextField
 				value={tempQuantity}
-				variant="standard"
+
 				onChange={handleQuantityChange}
 				inputProps={{
 					min: 1,
@@ -47,14 +47,14 @@ const QuantityInput = ({ item, updateItemQuantity }) => {
 				size="small"
 				sx={{
 					maxWidth: "50px",
+					mr: 1,
 					"& .MuiInputBase-input": {
-						textAlign: "right",
-						fontWeight:"bolt",
-						paddingRight: "10px",
-					},
+					padding: "4px 10px", // Внутренние отступы (верх-низ, лево-право)
+						textAlign: "center",
+				},
 				}}
 			/>
-			<Box component="span" sx={{ fontWeight: "bold" }}>шт</Box>
+			{/*<Box component="span" sx={{ fontWeight: "bold" }}>шт</Box>*/}
 		</Box>
 	);
 };

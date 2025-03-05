@@ -8,12 +8,14 @@ import {
 import '@/app/globals.css';
 
 import theme from '../theme';
-import Cart from "@/component/Cart";
 import MenuL2 from "@/component/MenuL2";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
+    <head>
+      <link rel="icon" type="image/png" href="/favicon.svg" />
+    </head>
     <body>
     <ThemeProvider theme={theme}>
       <CssBaseline />

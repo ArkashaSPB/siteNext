@@ -6,9 +6,10 @@ import { Box, Button, TextField, Modal, Tab, Tabs, Typography, IconButton, Snack
 import { authUserAPI, regUserAPI } from '@/app/api/siteAPI';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {shallow} from "zustand/shallow";
 import Link from "next/link";
 import theme from "@/theme";
+import RegisterForm from "@/component/user/RegisterForm";
+import AuthForm from "@/component/user/AuthForm";
 
 const UserBlock = () => {
 
@@ -104,8 +105,6 @@ const UserBlock = () => {
 					>
 						<Box component="img" sx={{height: '20px'}}  src="/imaga/people.svg" alt="ico"  />
 					</IconButton>
-
-
 				</>
 
 			)}
@@ -150,71 +149,11 @@ const UserBlock = () => {
 
 
 					{tabValue === 0 && (
-						<Box >
-							<Typography component="div" sx={{
-									fontSize: "24px",
-									fontWeight: "700",
-									fontStyle: "normal",
-								textAlign: "center", mb: 2
-							}}>
-
-								Вход
-							</Typography>
-							<TextField
-								variant="filled"
-								fullWidth
-								label="Email"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								sx={{ mb: 2 }}
-							/>
-							<TextField
-								variant="filled"
-								fullWidth
-								label="Пароль"
-								type="password"
-								value={pass}
-								onChange={(e) => setPass(e.target.value)}
-								sx={{ mb: 2 }}
-							/>
-							<Button fullWidth variant="contained" onClick={handleAuth} size="large">
-								Войти
-							</Button>
-						</Box>
+						<AuthForm setModalOpen={setModalOpen} setNotification={setNotification} setSnackbarOpen={setSnackbarOpen} />
 					)}
 
 					{tabValue === 1 && (
-						<Box >
-							<Typography component="div" sx={{
-								fontSize: "24px",
-								fontWeight: "700",
-								fontStyle: "normal",
-								textAlign: "center", mb: 2
-							}}>
-								Регистрация
-							</Typography>
-
-							<TextField
-								variant="filled"
-								fullWidth
-								label="Email"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								sx={{ mb: 2 }}
-							/>
-							<TextField
-								variant="filled"
-								fullWidth
-								label="Пароль"
-								type="password"
-								value={pass}
-								onChange={(e) => setPass(e.target.value)}
-								sx={{ mb: 2 }}
-							/>
-							<Button fullWidth variant="contained" onClick={handleRegister} size="large">
-								Зарегистрироваться
-							</Button>
-						</Box>
+						<RegisterForm setNotification={setNotification} setSnackbarOpen={setSnackbarOpen}/>
 					)}
 				</Box>
 			</Modal>

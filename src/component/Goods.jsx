@@ -63,7 +63,6 @@ const Goods = () => {
 		setSelectedProduct(product);
 		setSelectedCountry(product ? product.country : '');
 	};
-	console.log(selectedProduct)
 
 	return (
 		<Box>
@@ -175,7 +174,7 @@ const Goods = () => {
 									if (!selectedProduct) return;
 									useCartStore.getState().addItem({
 										id: selectedProduct.id,
-										title: selectedProduct.title,
+										title: selectedProduct.catName + ' ' + selectedProduct.coName,
 										img1: selectedProduct.img1,
 										price: selectedProduct.price,
 										img2: selectedProduct.img2,

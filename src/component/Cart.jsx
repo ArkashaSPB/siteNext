@@ -37,6 +37,7 @@ const Cart = () => {
 	const {items, totalQuantity, totalPrice, removeItem, updateItemQuantity, clearCart, initializeCart, applyPromo } = useCartStore();
 	const id = useUserStore((state) => state.id);
 
+	// console.log(items)
 
 
 	useEffect(() => {
@@ -93,7 +94,7 @@ const Cart = () => {
 			editOplataAPI(oplataId).then(data => {
 				//getOrdersFunc()
 				data.success && setTehEnd(true)
-				console.log(data)
+				// console.log(data)
 				// setOrderId(0)
 			})
 		}
@@ -198,9 +199,13 @@ const Cart = () => {
 								</Typography>
 							</Box>
 
-							<Box sx={{mb:2}}>
+							<Box sx={{mb:1}}>
 								<Box sx={sxStyles.promoBox}>
-									<TextField value={promo} onChange={e => setPromo(e.target.value)} label="Promo код" variant="standard" />
+									<TextField value={promo} onChange={e => setPromo(e.target.value)} placeholder="Промокод" sx={{
+										"& .MuiInputBase-input": {
+										padding: "7px 12px", // Внутренние отступы (верх-низ, лево-право)
+									},
+									}} />
 									<Box><Button  variant="contained" onClick={checkPromo}>Применить</Button></Box>
 								</Box>
 
