@@ -8,7 +8,6 @@ const QuantityInput = ({ item, updateItemQuantity }) => {
 
 	const handleQuantityChange = (e) => {
 		let value = e.target.value;
-
 		// Если поле пустое — оставляем пустым на 2 сек
 		if (value === "") {
 			setTempQuantity("");

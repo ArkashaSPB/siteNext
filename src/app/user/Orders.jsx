@@ -31,7 +31,6 @@ const Orders = ({orders,getOrdersFunc}) => {
 
 	const [tehEnd, setTehEnd] = useState(false)
 
-
 	const handleToggleOrder = (orderId) => {
 		setExpandedOrders((prevState) => ({
 			...prevState,
@@ -42,11 +41,9 @@ const Orders = ({orders,getOrdersFunc}) => {
 	const getSettingFunc  = () => {
 		getSettingAPI().then(data => setTron(data.tron) )
 	}
-
 	useEffect(() => {
 		getSettingFunc()
 	})
-
 	const addOplata = (oId) => {
 
 		addOplataAPI(oId).then(data => {
@@ -131,18 +128,6 @@ const Orders = ({orders,getOrdersFunc}) => {
 															objectPosition: 'center'}}
 													/>
 												</Box>
-												<Box sx={{width: 40, height: 40, borderRadius: 100, overflow: 'hidden',}}>
-													<CardMedia
-														component="img"
-														alt={item.title}
-														height="30"
-														image={url+item.img2}
-														sx={{width: '100%',
-															height: '100%',
-															objectFit: 'cover',
-															objectPosition: 'center'}}
-													/>
-												</Box>
 
 												<Box>
 													<ListItemText
@@ -182,16 +167,16 @@ const Orders = ({orders,getOrdersFunc}) => {
 							</>
 					:
 						<>
-							<p>Переведите указанную сумму на кошелек через Tron</p>
+							<p>Переведите указанную cумму USDT(TRC-20). </p>
+							<Box component="p"  sx={{fontWeight: "600", textTransform: 'uppercase', mt:1}}>Не забудьте нажать ‘Я оплатил’ после совершения перевода!</Box>
+							<Box sx={{border: '1px solid white', borderRadius: '10px', p: 1, my:2}}>
 							<p>Кошелек: <span style={{fontSize: '1.2rem'}}>{tron}</span></p>
 							<p>Сумма:  <span style={{fontSize: '1.2rem'}}>{summa} USDT</span></p>
-							<Button disabled={!oplataId} onClick={editOplataFunc} variant="contained">Оплатил</Button>
+							</Box>
+							<Button disabled={!oplataId} onClick={editOplataFunc} variant="contained">Я оплатил</Button>
 						</>
-
 					}
-
 				</DialogContent>
-
 			</Dialog>
 		</div>
 	);

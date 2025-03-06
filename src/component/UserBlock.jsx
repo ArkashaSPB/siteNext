@@ -74,7 +74,7 @@ const UserBlock = () => {
 			{id ? (
 				<>
 				<Link href="/user" passHref>
-					<IconButton  color="success">
+					<IconButton  color="success" sx={{color: '#49B884'}}>
 						<PersonIcon />
 					</IconButton>
 				</Link>
@@ -82,7 +82,6 @@ const UserBlock = () => {
 						<LogoutIcon />
 					</IconButton>
 				</>
-
 			) : (
 				<>
 					<Button
@@ -153,7 +152,8 @@ const UserBlock = () => {
 					)}
 
 					{tabValue === 1 && (
-						<RegisterForm setNotification={setNotification} setSnackbarOpen={setSnackbarOpen}/>
+						<RegisterForm setModalOpen={setModalOpen}
+													setNotification={setNotification} setSnackbarOpen={setSnackbarOpen}/>
 					)}
 				</Box>
 			</Modal>

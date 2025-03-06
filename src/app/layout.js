@@ -32,15 +32,15 @@ export default function RootLayout({ children }) {
             paddingY: 3
           }}
         >
-
-          <footer>
-            <Typography  align="center">
-              Silencewin@yandex.ru
+          <Box component='footer' textAlign="center">
+            <Typography  >
+              smsretail2025@protonmail.com
             </Typography>
-            <Typography variant="body2" align="center" sx={{ marginTop: '1rem' }}>
+            <Typography variant="body2" sx={{ my: '1rem' }}>
               © 2025 AcSale. Все права защищены.
             </Typography>
-          </footer>
+            <Typography align="center" component="a" sx={{color: 'white', textDecoration: 'underline !important'}} href="/file.docx">Лицензионное соглашение</Typography>
+          </Box>
         </Box>
       </Box>
       <div>

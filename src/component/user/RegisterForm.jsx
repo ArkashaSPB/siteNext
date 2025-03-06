@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { regUserAPI } from '@/app/api/siteAPI';
+import useUserStore from "@/store/userStore";
 
-const RegisterForm = ({ setTab, setNotification, setSnackbarOpen }) => {
+const RegisterForm = ({ setTab, setNotification, setSnackbarOpen, setModalOpen }) => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
+	const { check } = useUserStore();
 
 	const handleRegister = async () => {
-		try {
-			await regUserAPI({ email, password: pass });
-			setNotification('Регистрация успешна! Теперь войдите.');
-			setSnackbarOpen(true);
-		} catch (err) {
-			setNotification(err.response?.data?.error || 'Ошибка регистрации');
-			setSnackbarOpen(true);
-		}
+		regUserAPI({ email, password: pass})
+			.then(data => {
+				setNotification('Регистрация успешна! Теперь вы можете авторизоваться.');
+				setSnackbarOpen(true);
+
+				if (data.token) {
+					localStorage.setItem('token', data.token);
+					setNotification('Успешно вошли в систему!');
+					setSnackbarOpen(true);
+					check();
+					setModalOpen(false)
+				}
+
+			})
+			.catch((err) => {
+				setNotification(err.response?.data?.error || 'Ошибка регистрации');
+				setSnackbarOpen(true);
+			});
 	};
 
 	return (

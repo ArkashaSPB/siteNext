@@ -1,10 +1,13 @@
 'use client';
-import {Box, Container, Typography} from "@mui/material";
+import {Box, Button, Container, IconButton, Typography} from "@mui/material";
 import {shallow} from "zustand/shallow";
 import useUserStore from "@/store/userStore";
 import {getOrderIdAPI} from "@/app/api/siteAPI";
-import {useEffect, useState} from "react";
-import Orders from "@/app/user/Orders"; // Хранилище для корзины
+import React, {useEffect, useState} from "react";
+import Orders from "@/app/user/Orders";
+import PersonIcon from "@mui/icons-material/Person";
+import Link from "next/link";
+import {Reply} from "@mui/icons-material"; // Хранилище для корзины
 
 export default function UserPage() {
 
@@ -22,8 +25,6 @@ export default function UserPage() {
 	}
 
 
-
-
 	useEffect(() => {
 		getOrdersFunc();
 	},[id])
@@ -32,25 +33,25 @@ export default function UserPage() {
 	return (
 		<>
 			<Container sx={{my:3}}>
+
+				<Box>
+					<Link href="/" passHref>
+						<Button  sx={{mb: 2, color: "#49B884" }}>
+							назад
+						</Button>
+					</Link>
+				</Box>
 				{id
 					? <>
 						<Typography variant="h5" component="p">
 							Почта:  {mail}
 						</Typography>
-						<Typography variant="h5" component="p">
-							Имя: {name}
-						</Typography>
+
 
 						<Box sx={{my:3}}>
 							<Orders orders={orders} getOrdersFunc={getOrdersFunc} />
 						</Box>
-
-
 					</>
-
-
-
-
 					: <>Вы не авторизованы</>
 				}
 			</Container>

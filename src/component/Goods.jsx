@@ -4,6 +4,7 @@ import { Box, Button, Typography, Select, MenuItem, TextField } from '@mui/mater
 import useGoodsStore from '../store/goodsStore';
 import useCartStore from '../store/cartStore';
 import { shallow } from 'zustand/shallow';
+import QuantityInputGoods from "@/component/goods/QuantityInputGoods";
 
 const url = process.env.NEXT_PUBLIC_IMG;
 
@@ -132,34 +133,7 @@ const Goods = () => {
 						<Box sx={styles.flexItem}>
 							<Box component="span" sx={styles.infoSpan}>Доступно: {selectedProduct && selectedProduct.available}шт</Box>
 
-							<TextField
-								label="Количество"
-								type="number"
-								value={selectedProduct ? selectedProduct.quantity : 1}
-								onChange={(e) => {
-									let value = parseInt(e.target.value, 10) || 1;
-									const maxValue = selectedProduct ? selectedProduct.available : 1;
-									if (value > maxValue) value = maxValue;
-									if (value < 1) value = 1;
-									if (selectedProduct) {
-										useGoodsStore.getState().updateItemQuantity(selectedProduct.id, value);
-										setSelectedProduct((prev) => ({ ...prev, quantity: value }));
-									}
-								}}
-								fullWidth
-								sx={{
-									minWidth: 120,
-									"& .MuiInputBase-input": {
-										padding: "16px 16px",
-									},
-									"& .MuiInputLabel-root": {
-										fontFamily: "'Montserrat', sans-serif", // Меняем шрифт
-										fontWeight: 700, // Делаем жирным
-										fontSize: "12px", // Устанавливаем размер шрифта
-										color: "white", // Цвет текста
-									},
-								}}
-							/>
+							<QuantityInputGoods selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
 
 						</Box>
 

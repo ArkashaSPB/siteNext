@@ -37,9 +37,6 @@ const Cart = () => {
 	const {items, totalQuantity, totalPrice, removeItem, updateItemQuantity, clearCart, initializeCart, applyPromo } = useCartStore();
 	const id = useUserStore((state) => state.id);
 
-	// console.log(items)
-
-
 	useEffect(() => {
 		initializeCart();
 	}, []);
@@ -49,9 +46,6 @@ const Cart = () => {
 			setMessage(false);
 		}
 	}, [items]);
-
-
-
 
 	useEffect(() => {
 		if(orderId > 0){
@@ -92,10 +86,7 @@ const Cart = () => {
 	const editOplataFunc = () => {
 		if (orderId) {
 			editOplataAPI(oplataId).then(data => {
-				//getOrdersFunc()
 				data.success && setTehEnd(true)
-				// console.log(data)
-				// setOrderId(0)
 			})
 		}
 	}
@@ -110,7 +101,6 @@ const Cart = () => {
 
 	return (
 		<>
-
 			<Button variant="contained" onClick={() => setOpen(true)} sx={sxStyles.cartButton}>
 				{totalQuantity > 0 && (
 					<Box sx={sxStyles.cartCount}>{totalQuantity}</Box>
@@ -126,15 +116,11 @@ const Cart = () => {
 				<Box component="img" src="/imaga/cart.svg" alt="ico" sx={{height: '20px'}} />
 			</IconButton>
 
-
-
-
-
 			<Drawer anchor="right" open={open} onClose={closeFunc}>
 				<Box sx={sxStyles.drawer}>
 					<Box sx={sxStyles.drawerHeader}>
 						<Typography variant="span" sx={{fontWeight: 700, fontSize:'32px'}}>Корзина</Typography>
-						<IconButton onClick={() => setOpen(false)}>
+						<IconButton onClick={closeFunc}>
 							<CloseIcon />
 						</IconButton>
 					</Box>
@@ -143,14 +129,22 @@ const Cart = () => {
 								{tehEnd ?
 									<>
 										<Alert>
-											Отлично, после проверки статус заказа автоматически сменится
+											Сразу после проверки оплаты мы вышлем данные аккаунтов вам на электронную почту
 										</Alert>
 									</>
 									:
 									<>
-										<p>Переведите указанную сумму на кошелек через Tron</p>
-										<p>Кошелек: <span style={{fontSize: '0.8rem'}}>{tron}</span></p>
-										<p>Сумма:  <span style={{fontSize: '1.2rem'}}>{summa} USDT</span></p>
+										<p>Переведите указанную cумму USDT(TRC-20). </p>
+										<Box component="p"  sx={{fontWeight: "600", textTransform: 'uppercase', mt:1}}>Не забудьте нажать ‘Я оплатил’ после совершения перевода!</Box>
+
+										<Box sx={{border: '1px solid white', borderRadius: '10px', p: 1, my:2}}>
+											<p>Кошелек:<br/>
+												<span style={{fontSize: '1.2rem'}}>{tron}</span>
+											</p>
+											<p>Сумма:  <span style={{fontSize: '1.2rem'}}>{summa} USDT</span></p>
+										</Box>
+
+
 										<Button  onClick={editOplataFunc} variant="contained">Я оплатил</Button>
 									</>
 								}
@@ -163,11 +157,8 @@ const Cart = () => {
 							items.map((item) => (
 								<Box key={item.id} sx={sxStyles.itemBox}>
 									<Box sx={sxStyles.itemHeader}>
-
-
 										<Typography variant="h5" sx={sxStyles.title}>{item.title}</Typography>
 										<QuantityInput item={item} updateItemQuantity={updateItemQuantity} />
-
 										<Typography variant="body2" sx={sxStyles.priceText}>
 											{item.price}$
 											{item.oldPrice && (
@@ -214,10 +205,7 @@ const Cart = () => {
 									: null
 								}
 							</Box>
-
-
 							{/*Очистка корзины*/}
-
 							<Button color="error" fullWidth onClick={()=>{
 								clearCart()
 								setMessagePromo('')
