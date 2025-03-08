@@ -21,6 +21,8 @@ const Goods = () => {
 	const [selectedCountry, setSelectedCountry] = useState('');
 	const [searchQuery, setSearchQuery] = useState('');
 
+	console.log(selectedProduct)
+
 	useEffect(() => {
 		if (!goods.length) {
 			loadGoods();
@@ -37,7 +39,7 @@ const Goods = () => {
 	useEffect(() => {
 		if (filteredProducts.length > 0) {
 			setSelectedProduct(filteredProducts[0]); // Выбираем первый товар
-			setSelectedCountry(filteredProducts[0].country); // Устанавливаем страну
+			//setSelectedCountry(filteredProducts[0].country); // Устанавливаем страну
 		}
 	}, [selectedCategory, goods]);
 
@@ -54,7 +56,7 @@ const Goods = () => {
 	const handleCategoryChange = (category) => {
 		setSelectedCategory(category.kod);
 		setSelectedProduct(null);
-		setSelectedCountry('');
+		//setSelectedCountry('');
 		setCategoryName(category);
 		setSearchQuery('');
 	};
@@ -62,15 +64,13 @@ const Goods = () => {
 	const handleProductChange = (event) => {
 		const product = filteredProducts.find((p) => p.id === event.target.value);
 		setSelectedProduct(product);
-		setSelectedCountry(product ? product.country : '');
+		//setSelectedCountry(product ? product.country : '');
 	};
 
 	return (
 		<Box>
 			<Box sx={styles.container}>
-
 				<Typography variant="h4" sx={styles.title}>Сервисы</Typography>
-
 				<Box sx={styles.gridContainer}>
 					<TextField
 						fullWidth
@@ -138,7 +138,7 @@ const Goods = () => {
 						</Box>
 
 						<Box sx={styles.buyButtonContainer}>
-							<Box component="span" sx={styles.infoSpan}>Итого: {selectedProduct && selectedProduct.price * selectedProduct.quantity}$</Box>
+							<Box component="span" sx={styles.infoSpan}>Итого: {selectedProduct && (selectedProduct.price * selectedProduct.quantity).toFixed(2)}$</Box>
 							<Button
 								variant="contained"
 								disabled={!selectedProduct}
