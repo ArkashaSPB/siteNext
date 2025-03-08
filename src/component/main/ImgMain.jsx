@@ -6,7 +6,7 @@ const img = [
 	{ img: '/ico/gmail.svg', alt: 'gmail' },
 	{ img: '/ico/insta.svg', alt: 'Instagram' },
 	{ img: '/ico/mmm.svg', alt: 'mesenger' },
-	{ img: '/ico/pbx.svg', alt: 'Pbx' },
+	// { img: '/ico/pbx.svg', alt: 'Pbx' },
 	{ img: '/ico/skype.svg', alt: 'skype' },
 	{ img: '/ico/telega.svg', alt: 'Telegram' },
 	{ img: '/ico/ttt.svg', alt: 'ttt' },
@@ -64,7 +64,7 @@ const styles = {
 
 	leftBlur: {
 		position: 'absolute',
-		width: '451px',
+		width: {xs : '200px', md : '451px'} ,
 		left: '0',
 		top: '0%',
 		height: '100%',
@@ -75,7 +75,7 @@ const styles = {
 
 	rightBlur: {
 		position: 'absolute',
-		width: '451px',
+		width: {xs : '200px', md : '451px'} ,
 		right: '0',
 		top: '0%',
 		height: '100%',
@@ -86,10 +86,11 @@ const styles = {
 
 	iconRow: {
 		pt: 5,
-		gap: 2,
+		gap: 1,
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+
 	},
 
 	icon: {
@@ -98,7 +99,7 @@ const styles = {
 
 	mainTitle: {
 		textAlign: "center",
-		fontSize: { xs: '18px', md: '45px' },
+		fontSize: { xs: '16px', md: '45px' },
 		mt: 3,
 		textTransform: "uppercase",
 		fontWeight: 800,
@@ -106,7 +107,7 @@ const styles = {
 
 	subTitle: {
 		textAlign: "center",
-		fontSize: { xs: '18px', md: '45px' },
+		fontSize: { xs: '16px', md: '45px' },
 		fontWeight: '600',
 		fontStyle: "italic",
 		textTransform: "uppercase",
