@@ -1,13 +1,17 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {TextField} from "@mui/material";
 import useGoodsStore from "@/store/goodsStore";
+import {useLang} from "@/context/LangContext";
 
 const QuantityInputGoods = ({ selectedProduct, setSelectedProduct }) => {
 
 	const [quantity, setQuantity] = useState(selectedProduct ? selectedProduct.quantity : 1);
 	const timeoutRef = useRef(null);
 
+
+	const { translations } = useLang();
 	const handleQuantityChange = (e) => {
+
 		let value = e.target.value.trim(); // Убираем пробелы
 
 		// Очистка предыдущего таймера
@@ -34,7 +38,7 @@ const QuantityInputGoods = ({ selectedProduct, setSelectedProduct }) => {
 
 	return (
 		<TextField
-			label="Количество"
+			label={translations.goodCol}
 			type="number"
 			value={quantity}
 			onChange={handleQuantityChange}

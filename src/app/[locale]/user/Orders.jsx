@@ -15,8 +15,12 @@ import {
 const url = process.env.NEXT_PUBLIC_IMG;
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {addOplataAPI, editOplataAPI, getSettingAPI} from "@/app/api/siteAPI";
+import {useLang} from "@/context/LangContext";
 
 const Orders = ({orders,getOrdersFunc}) => {
+
+
+	const { translations } = useLang();
 
 	const [expandedOrders, setExpandedOrders] = useState({});
 
@@ -83,32 +87,32 @@ const Orders = ({orders,getOrdersFunc}) => {
 					<Card key={order.id} sx={{ mb: 3 }}>
 						<CardContent>
 							<Box display="flex" justifyContent="space-between" alignItems="center">
-								<Typography variant="h6">Заказ #{order.id}</Typography>
+								<Typography variant="h6">{translations.userZakaz} #{order.id}</Typography>
 								<IconButton onClick={() => handleToggleOrder(order.id)}>
 									<ExpandMoreIcon />
 								</IconButton>
 							</Box>
 							<Typography variant="body2" color="textSecondary">
-								Оплата: {order.oplata === 0 ? 'Не оплачен' :  'Оплачен'}
+								{translations.userOplata}: {order.oplata === 0 ? translations.userOplataStatus :  translations.userOplataStatus2}
 							</Typography>
 							<Typography  variant="body2" color="textSecondary">
-								Статус: <span style={{color:order.status ? '#58d104': '#bc9a03' }} >{!order.status ? 'Обрабатывается' : 'Выполнен'}</span>
+								{translations.userGoodsStatus}: <span style={{color:order.status ? '#58d104': '#bc9a03' }} >{!order.status ? translations.userGoodsStatusInfo : translations.userGoodsStatusInfo2}</span>
 							</Typography>
 							<Typography variant="body2" color="textSecondary">
-								Дата: {new Date(order.date).toLocaleString()}
+								{translations.userDate}: {new Date(order.date).toLocaleString()}
 							</Typography>
-							<Typography variant="h6">Сумма: ${order.price}</Typography>
+							<Typography variant="h6">{translations.userSumma}: ${order.price}</Typography>
 							{!order.oplata && (new Date() - new Date(order.date) <= 60 * 60 * 1000) ? (
 								<Button sx={{ my: 2 }} variant="contained"
 												onClick={() => clickB(order.price, order.id)}>
-									Оплатить
+									{translations.userGoodsButton}
 								</Button>
 							) : null}
 						</CardContent>
 
 						<Collapse in={expandedOrders[order.id]} timeout="auto" unmountOnExit>
 							<Box sx={{ padding: 2 }}>
-								<Typography variant="subtitle1">Товары:</Typography>
+								<Typography variant="subtitle1">{translations.userGoods}:</Typography>
 								<List>
 									{order.items.map((item) => (
 										<ListItem key={item.id}>
@@ -132,7 +136,7 @@ const Orders = ({orders,getOrdersFunc}) => {
 												<Box>
 													<ListItemText
 														primary={item.title}
-														secondary={`Цена: $${item.price} x ${item.count}`}
+														secondary={`${translations.userGoodsPrice}: $${item.price} x ${item.count}`}
 													/>
 												</Box>
 											</Box>
@@ -144,7 +148,7 @@ const Orders = ({orders,getOrdersFunc}) => {
 					</Card>
 				))
 			) : (
-				<Typography variant="body1" color="textSecondary">У пользователя нет заказов.</Typography>
+				<Typography variant="body1" color="textSecondary">{translations.userInfoNoneOrder}</Typography>
 			)}
 
 
@@ -155,25 +159,25 @@ const Orders = ({orders,getOrdersFunc}) => {
 				aria-describedby="alert-dialog-description"
 			>
 				<DialogTitle id="alert-dialog-title">
-					Оплата
+					{translations.userOplata}
 				</DialogTitle>
 				<DialogContent>
 
 					{tehEnd ?
 							<>
 								<Alert>
-									Отлично, после проверки статус заказа автоматически сменится
+									{translations.cartEndOplata}
 								</Alert>
 							</>
 					:
 						<>
-							<p>Переведите указанную cумму USDT(TRC-20). </p>
-							<Box component="p"  sx={{fontWeight: "600", textTransform: 'uppercase', mt:1}}>Не забудьте нажать ‘Я оплатил’ после совершения перевода!</Box>
+							<p>{translations.cartOplataInfo} </p>
+							<Box component="p"  sx={{fontWeight: "600", textTransform: 'uppercase', mt:1}}>{translations.cartOplataInfo2}</Box>
 							<Box sx={{border: '1px solid white', borderRadius: '10px', p: 1, my:2}}>
-							<p>Кошелек: <span style={{fontSize: '1.2rem'}}>{tron}</span></p>
-							<p>Сумма:  <span style={{fontSize: '1.2rem'}}>{summa} USDT</span></p>
+							<p>{translations.cartOplataKoshel}: <span style={{fontSize: '1.2rem'}}>{tron}</span></p>
+							<p>{translations.cartOplataSumma}:  <span style={{fontSize: '1.2rem'}}>{summa} USDT</span></p>
 							</Box>
-							<Button disabled={!oplataId} onClick={editOplataFunc} variant="contained">Я оплатил</Button>
+							<Button disabled={!oplataId} onClick={editOplataFunc} variant="contained">{translations.cartOplataButton}</Button>
 						</>
 					}
 				</DialogContent>

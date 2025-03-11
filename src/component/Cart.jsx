@@ -1,27 +1,29 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useCartStore from '@/store/cartStore';
 import { Box, Button, Drawer, Typography, IconButton, TextField, List, ListItem, Alert } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+
 import useUserStore from "@/store/userStore";
-import PersonIcon from '@mui/icons-material/Person';
-import EmailIcon from '@mui/icons-material/Email';
 import {
 	addOplataAPI,
 	addOrderAPI,
 	editOplataAPI,
-	getOrderIdAPI,
 	getOrderOneIdAPI,
 	getPromoAPI,
 	getSettingAPI
 } from "@/app/api/siteAPI";
-import Link from "next/link";
 import QuantityInput from "@/component/cart/QuantityInput";
+import {useLang} from "@/context/LangContext";
 const url = process.env.NEXT_PUBLIC_IMG;
 const Cart = () => {
+
+	// Получаем переводы из контекста
+	const { translations } = useLang();
+
+
+
 	const [open, setOpen] = useState(false);
 	const [promo, setPromo] = useState('');
 	const [message, setMessage] = useState(false);
@@ -76,9 +78,9 @@ const Cart = () => {
 		getPromoAPI(promo).then(data => {
 			if (data) {
 				applyPromo(data);
-				setMessagePromo(<span style={{ color: "green", fontSize: "0.7rem" }}>Промо код найден</span>);
+				setMessagePromo(<span style={{ color: "green", fontSize: "0.7rem" }}>{translations.cartPromoInfo}</span>);
 			} else {
-				setMessagePromo(<span style={{ color: "red", fontSize: "0.7rem" }}>Промо код не найден</span>);
+				setMessagePromo(<span style={{ color: "red", fontSize: "0.7rem" }}>{translations.cartPromoInfo2}</span>);
 			}
 		});
 	};
@@ -106,7 +108,7 @@ const Cart = () => {
 					<Box sx={sxStyles.cartCount}>{totalQuantity}</Box>
 				)}
 				<img src="/imaga/cart.svg" alt="ico" />
-				<Typography component="span" sx={sxStyles.cartText}>Корзина</Typography>
+				<Typography component="span" sx={sxStyles.cartText}>{translations.cart}</Typography>
 			</Button>
 
 			<IconButton variant="contained" onClick={() => setOpen(true)} sx={sxStyles.cartButton2}>
@@ -119,7 +121,7 @@ const Cart = () => {
 			<Drawer anchor="right" open={open} onClose={closeFunc}>
 				<Box sx={sxStyles.drawer}>
 					<Box sx={sxStyles.drawerHeader}>
-						<Typography variant="span" sx={{fontWeight: 700, fontSize:'32px'}}>Корзина</Typography>
+						<Typography variant="span" sx={{fontWeight: 700, fontSize:'32px'}}>{translations.cartZag}</Typography>
 						<IconButton onClick={closeFunc}>
 							<CloseIcon />
 						</IconButton>
@@ -129,23 +131,23 @@ const Cart = () => {
 								{tehEnd ?
 									<>
 										<Alert>
-											Сразу после проверки оплаты мы вышлем данные аккаунтов вам на электронную почту
+											{translations.cartEndOplata}
 										</Alert>
 									</>
 									:
 									<>
-										<p>Переведите указанную cумму USDT(TRC-20). </p>
-										<Box component="p"  sx={{fontWeight: "600", textTransform: 'uppercase', mt:1}}>Не забудьте нажать ‘Я оплатил’ после совершения перевода!</Box>
+										<p>{translations.cartOplataInfo}</p>
+										<Box component="p"  sx={{fontWeight: "600", textTransform: 'uppercase', mt:1}}>{translations.cartOplataInfo2}</Box>
 
 										<Box sx={{border: '1px solid white', borderRadius: '10px', p: 1, my:2}}>
-											<p>Кошелек:<br/>
+											<p>{translations.cartOplataKoshel}:<br/>
 												<span style={{fontSize: '1.2rem'}}>{tron}</span>
 											</p>
-											<p>Сумма:  <span style={{fontSize: '1.2rem'}}>{summa} USDT</span></p>
+											<p>{translations.cartOplataSumma}:  <span style={{fontSize: '1.2rem'}}>{summa} USDT</span></p>
 										</Box>
 
 
-										<Button  onClick={editOplataFunc} variant="contained">Я оплатил</Button>
+										<Button  onClick={editOplataFunc} variant="contained">{translations.cartOplataButton}</Button>
 									</>
 								}
 							</Box>
@@ -174,7 +176,7 @@ const Cart = () => {
 							))
 						) : (
 							<Typography variant="body1" align="center" color="textSecondary">
-								{!orderId ? 'Корзина пуста' : null}
+								{!orderId ? translations.cartNull : null}
 							</Typography>
 						)}
 					</Box>
@@ -183,21 +185,21 @@ const Cart = () => {
 						<Box sx={sxStyles.footer}>
 							<Box sx={sxStyles.infoAll}>
 								<Typography variant="body1" sx={sxStyles.fl}>
-									Количество: <Box component="span" sx={{ textAlign: "right", fontSize: '1.3rem' }}>{totalQuantity}шт</Box>
+									{translations.cartCount}: <Box component="span" sx={{ textAlign: "right", fontSize: '1.3rem' }}>{totalQuantity}{translations.cartCount2}</Box>
 								</Typography>
 								<Typography variant="body1" sx={sxStyles.fl}>
-									Итого: <Box component="span" sx={{ textAlign: "right",fontSize: '1.3rem' }}>{totalPrice}$</Box>
+									{translations.cartItogo}: <Box component="span" sx={{ textAlign: "right",fontSize: '1.3rem' }}>{totalPrice}$</Box>
 								</Typography>
 							</Box>
 
 							<Box sx={{mb:1}}>
 								<Box sx={sxStyles.promoBox}>
-									<TextField value={promo} onChange={e => setPromo(e.target.value)} placeholder="Промокод" sx={{
+									<TextField value={promo} onChange={e => setPromo(e.target.value)} placeholder={translations.cartPromokod} sx={{
 										"& .MuiInputBase-input": {
 										padding: "7px 12px", // Внутренние отступы (верх-низ, лево-право)
 									},
 									}} />
-									<Box><Button  variant="contained" onClick={checkPromo}>Применить</Button></Box>
+									<Box><Button  variant="contained" onClick={checkPromo}>{translations.cartPromoButton}</Button></Box>
 								</Box>
 
 								{messagePromo !== '' ?
@@ -210,11 +212,11 @@ const Cart = () => {
 								clearCart()
 								setMessagePromo('')
 							}} sx={sxStyles.clearCartButton}>
-								<DeleteIcon /> Очистить корзину
+								<DeleteIcon /> {translations.cartClearBasket}
 							</Button>
-							{!id && <Box component="span" sx={sxStyles.messageInfo}>Авторизуйтесь/Зарегистрируйтесь для выполнение заказа</Box>}
+							{!id && <Box component="span" sx={sxStyles.messageInfo}>{translations.cartInfo}</Box>}
 							<Button variant="contained" size="large" sx={sxStyles.orderButton} fullWidth onClick={addOrder} disabled={!id}>
-								Сделать заказ
+								{translations.cartMainButton}
 							</Button>
 						</Box>
 					)}

@@ -71,3 +71,8 @@ export const getPromoAPI = async (name) => {
 	const {data} = await $host.get(`goods/promo/` + name)
 	return data
 }
+
+export const getAllLangAPI = async () => {
+	const {data} = await $host.get(`lang` )
+	return data
+}

@@ -1,14 +1,18 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Box, Button, Typography, Select, MenuItem, TextField } from '@mui/material';
 import useGoodsStore from '../store/goodsStore';
 import useCartStore from '../store/cartStore';
 import { shallow } from 'zustand/shallow';
 import QuantityInputGoods from "@/component/goods/QuantityInputGoods";
+import {useLang} from "@/context/LangContext";
 
 const url = process.env.NEXT_PUBLIC_IMG;
 
 const Goods = () => {
+	const { translations } = useLang();
+
+	
 	const goods = useGoodsStore((state) => state.goods, shallow);
 	const categories = useGoodsStore((state) => state.categories, shallow);
 	const countries = useGoodsStore((state) => state.countries, shallow);
@@ -20,8 +24,6 @@ const Goods = () => {
 	const [selectedProduct, setSelectedProduct] = useState(null);
 	const [selectedCountry, setSelectedCountry] = useState('');
 	const [searchQuery, setSearchQuery] = useState('');
-
-	console.log(selectedProduct)
 
 	useEffect(() => {
 		if (!goods.length) {
@@ -70,11 +72,11 @@ const Goods = () => {
 	return (
 		<Box>
 			<Box sx={styles.container}>
-				<Typography variant="h4" sx={styles.title}>Сервисы</Typography>
+				<Typography variant="h4" sx={styles.title}>{translations.goodZag}</Typography>
 				<Box sx={styles.gridContainer}>
 					<TextField
 						fullWidth
-						placeholder="Поиск по названию..."
+						placeholder={translations.goodSearch}
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						sx={styles.searchField}
@@ -106,12 +108,12 @@ const Goods = () => {
 					<Box sx={styles.productHeader}>
 							{/*<img src={url + categoryName.img} height={22} style={{ marginRight: 10 }} />*/}
 							<Box component="span" sx={{fontSize:'36px', fontWeight: '600'}}>{categoryName.name}</Box>
-						<Box component="span" fontSize={'20px'} sx={styles.rightT}>Цена: {selectedProduct && selectedProduct.price}$</Box>
+						<Box component="span" fontSize={'20px'} sx={styles.rightT}>{translations.goodPrice}: {selectedProduct && selectedProduct.price}$</Box>
 					</Box>
 
 					<Box sx={styles.productControls}>
 						<Box sx={styles.flexItem}>
-							<Box component="span" sx={styles.infoSpan}>Страна:</Box>
+							<Box component="span" sx={styles.infoSpan}>{translations.goodCountry}:</Box>
 							<Select
 								value={selectedProduct ? selectedProduct.id : ''}
 								onChange={handleProductChange}
@@ -131,14 +133,14 @@ const Goods = () => {
 						</Box>
 
 						<Box sx={styles.flexItem}>
-							<Box component="span" sx={styles.infoSpan}>Доступно: {selectedProduct && selectedProduct.available}шт</Box>
+							<Box component="span" sx={styles.infoSpan}>{translations.goodTotal}: {selectedProduct && selectedProduct.available}{translations.goodEdenica}</Box>
 
 							<QuantityInputGoods selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct} />
 
 						</Box>
 
 						<Box sx={styles.buyButtonContainer}>
-							<Box component="span" sx={styles.infoSpan}>Итого: {selectedProduct && (selectedProduct.price * selectedProduct.quantity).toFixed(2)}$</Box>
+							<Box component="span" sx={styles.infoSpan}>{translations.goodTotal2}: {selectedProduct && (selectedProduct.price * selectedProduct.quantity).toFixed(2)}$</Box>
 							<Button
 								variant="contained"
 								disabled={!selectedProduct}
@@ -157,7 +159,7 @@ const Goods = () => {
 									});
 								}}
 							>
-								Купить
+								{translations.goodBuy}
 							</Button>
 						</Box>
 					</Box>

@@ -1,5 +1,7 @@
-import React from 'react';
+'use client'
+import React, {useContext} from 'react';
 import { Box, Typography } from "@mui/material";
+import {useLang} from "@/context/LangContext";
 
 const img = [
 	{ img: '/ico/ym.svg', alt: 'ym' },
@@ -20,7 +22,12 @@ const img2 = [
 	{ img: '/ico/1x.svg', alt: '1x' },
 ];
 
+
+
 const ImgMain = () => {
+
+	const { translations } = useLang();
+
 	return (
 		<Box sx={styles.container}>
 			<Box sx={styles.leftBlur}></Box>
@@ -32,17 +39,11 @@ const ImgMain = () => {
 				))}
 			</Box>
 
-			<Typography component="h1" variant="h1" sx={styles.mainTitle}>
-				Аккаунты для онлайн сервисов
-			</Typography>
+			<Typography component="h1" variant="h1" sx={styles.mainTitle}>{translations.zagolovok1}</Typography>
 
-			<Typography component="p" variant="p" sx={styles.subTitle}>
-				по доступным ценам
-			</Typography>
+			<Typography component="p" variant="p" sx={styles.subTitle}>{translations.zagolovok2}</Typography>
 
-			<Typography component="p" variant="p" sx={styles.tagline}>
-				Ваши любимые развлечения всего в одном клике!
-			</Typography>
+			<Typography component="p" variant="p" sx={styles.tagline}>{translations.zagolovok3}</Typography>
 
 			<Box sx={styles.largeIconRow}>
 				{img2.map((item, index) => (
