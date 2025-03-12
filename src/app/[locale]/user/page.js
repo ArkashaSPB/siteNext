@@ -37,7 +37,7 @@ export default function UserPage() {
 			<meta name="description" content={translations.userDes} />
 			<Container sx={{my:3}}>
 				<Box>
-					<Link href="/next/public" passHref>
+					<Link href={`/${translations.lang}`} passHref>
 						<Button  sx={{mb: 2, color: "#49B884" }}>
 							{translations.userBack}
 						</Button>

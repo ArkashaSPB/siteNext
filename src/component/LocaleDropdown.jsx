@@ -25,10 +25,10 @@ export default function LocaleDropdown() {
 			onChange={handleChange}
 			variant="outlined"
 			size="small"
-			sx={{ minWidth: 80, mr: 2 }}
+			sx={{ minWidth: 60, mr: 2 , p: 0}}
 		>
 			{allLanguages.map((lang) => (
-				<MenuItem key={lang.id} value={lang.lang}>
+				<MenuItem key={lang.id} value={lang.lang} sx={{ py: 0.4, px: 1 }}>
 					{lang.lang.toUpperCase()}
 				</MenuItem>
 			))}
