@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { regUserAPI } from '@/app/api/siteAPI';
+import { regUserAPI } from '@/component/api/siteAPI';
 import useUserStore from "@/store/userStore";
+import {useLang} from "@/context/LangContext";
 
-const RegisterForm = ({ setTab, setNotification, setSnackbarOpen, setModalOpen }) => {
+const RegisterForm = ({ setNotification, setSnackbarOpen, setModalOpen }) => {
+
+	const { translations } = useLang();
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const { check } = useUserStore();
 
 	const handleRegister = async () => {
-		regUserAPI({ email, password: pass})
+		regUserAPI({ email, password: pass, lang:translations.lang })
 			.then(data => {
-				setNotification('Регистрация успешна! Теперь вы можете авторизоваться.');
-				setSnackbarOpen(true);
 
 				if (data.token) {
 					localStorage.setItem('token', data.token);
-					setNotification('Успешно вошли в систему!');
+					setNotification(translations.authInfo1);
 					setSnackbarOpen(true);
 					check();
 					setModalOpen(false)
@@ -24,7 +25,7 @@ const RegisterForm = ({ setTab, setNotification, setSnackbarOpen, setModalOpen }
 
 			})
 			.catch((err) => {
-				setNotification(err.response?.data?.error || 'Ошибка регистрации');
+				setNotification(err.response?.data?.error || translations.authInfo2);
 				setSnackbarOpen(true);
 			});
 	};
@@ -37,13 +38,13 @@ const RegisterForm = ({ setTab, setNotification, setSnackbarOpen, setModalOpen }
 				fontStyle: "normal",
 				textAlign: "center", mb: 2
 			}}>
-				Регистрация
+				{translations.authReg}
 			</Typography>
 
 			<TextField
 				variant="filled"
 				fullWidth
-				label="Email"
+				label={translations.authFormEmail}
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
 				sx={{ mb: 2 }}
@@ -51,14 +52,14 @@ const RegisterForm = ({ setTab, setNotification, setSnackbarOpen, setModalOpen }
 			<TextField
 				variant="filled"
 				fullWidth
-				label="Пароль"
+				label={translations.authFormPass}
 				type="password"
 				value={pass}
 				onChange={(e) => setPass(e.target.value)}
 				sx={{ mb: 2 }}
 			/>
-			<Button fullWidth variant="contained" onClick={handleRegister} size="large">
-				Зарегистрироваться
+			<Button fullWidth variant="contained" onClick={handleRegister} size="large" disabled={email === '' || pass === ''}>
+				{translations.authButton2}
 			</Button>
 		</Box>
 	);

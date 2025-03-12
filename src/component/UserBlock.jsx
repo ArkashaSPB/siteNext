@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import useUserStore from '@/store/userStore';
 import { Box, Button, TextField, Modal, Tab, Tabs, Typography, IconButton, Snackbar } from '@mui/material';
-import { authUserAPI, regUserAPI } from '@/app/api/siteAPI';
+import { authUserAPI, regUserAPI } from '@/component/api/siteAPI';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Link from "next/link";
@@ -14,7 +14,9 @@ import {useParams} from "next/navigation"; // Импортируем конте�
 
 const UserBlock = () => {
 	const id = useUserStore((state) => state.id);
-	const { mail, name, check, logout } = useUserStore();
+	const local = useUserStore((state) => state.local);
+	const { mail, check, logout } = useUserStore();
+
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const [modalOpen, setModalOpen] = useState(false);
@@ -109,8 +111,8 @@ const UserBlock = () => {
 							},
 						}}
 					>
-						<Tab label="Авторизация" />
-						<Tab label="Регистрация" />
+						<Tab label={translations.authAuth} />
+						<Tab label={translations.authReg} />
 					</Tabs>
 
 					{tabValue === 0 && (

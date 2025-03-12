@@ -1,36 +1,40 @@
-import { getAllLangAPI } from "@/app/api/siteAPI";
+import { getAllLangAPI } from "@/component/api/siteAPI";
 import { LangProvider } from "@/context/LangContext";
 import ClientProviders from "@/component/ClientProviders";
 import MenuL2 from "@/component/MenuL2";
 import Footer from "@/component/Footer";
 import { Box } from "@mui/material";
+import { redirect } from "next/navigation";
 import "@/app/globals.css";
 
 export default async function LocaleLayout(props) {
-	// Ждем, когда params будут доступны (SSR)
+	// Получаем params (SSR)
 	const params = await props.params;
-	const locale = params.locale; // например, "ru" или "en"
+	const locale = params.locale || "ru"; // например, "ru" или "en"
+
+	// Получаем список языков из API
 	const langData = await getAllLangAPI();
 
+	// Если в списке языков нет нужного locale, перенаправляем на /ru
+	const languageExists = langData.some(lang => lang.lang === locale);
+	if (!languageExists) {
+		redirect("/ru");
+	}
+
+	// Здесь мы НЕ включаем тег <head>, так как он уже задан в корневом layout или через head.js
 	return (
-		<html  suppressHydrationWarning>
-		<head>
-			<link rel="icon" type="image/png" href="/favicon.svg" />
-		</head>
-		<body>
-		{/* Передаем выбранный язык (из URL) как defaultLang */}
-		<LangProvider serverLangs={langData} defaultLang={locale}>
-			<ClientProviders>
-				<Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-					<Box sx={{ flexGrow: 1 }}>
-						<MenuL2 />
-						{props.children}
+		<>
+			<LangProvider serverLangs={langData} defaultLang={locale}>
+				<ClientProviders>
+					<Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+						<Box sx={{ flexGrow: 1 }}>
+							<MenuL2 />
+							{props.children}
+						</Box>
+						<Footer />
 					</Box>
-					<Footer />
-				</Box>
-			</ClientProviders>
-		</LangProvider>
-		</body>
-		</html>
+				</ClientProviders>
+			</LangProvider>
+		</>
 	);
 }

@@ -39,7 +39,7 @@ const ImgMain = () => {
 				))}
 			</Box>
 
-			<Typography component="h1" variant="h1" sx={styles.mainTitle}>{translations.zagolovok1}</Typography>
+			<Typography component="p" variant="h1" sx={styles.mainTitle}>{translations.zagolovok1}</Typography>
 
 			<Typography component="p" variant="p" sx={styles.subTitle}>{translations.zagolovok2}</Typography>
 

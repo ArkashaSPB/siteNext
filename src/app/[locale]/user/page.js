@@ -2,7 +2,7 @@
 import {Box, Button, Container, IconButton, Typography} from "@mui/material";
 import {shallow} from "zustand/shallow";
 import useUserStore from "@/store/userStore";
-import {getOrderIdAPI} from "@/app/api/siteAPI";
+import {getOrderIdAPI} from "@/component/api/siteAPI";
 import React, {useEffect, useState} from "react";
 import Orders from "@/app/[locale]/user/Orders";
 import PersonIcon from "@mui/icons-material/Person";

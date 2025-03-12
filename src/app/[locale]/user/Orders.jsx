@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 const url = process.env.NEXT_PUBLIC_IMG;
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {addOplataAPI, editOplataAPI, getSettingAPI} from "@/app/api/siteAPI";
+import {addOplataAPI, editOplataAPI, getSettingAPI} from "@/component/api/siteAPI";
 import {useLang} from "@/context/LangContext";
 
 const Orders = ({orders,getOrdersFunc}) => {

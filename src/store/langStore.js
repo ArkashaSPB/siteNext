@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import {getAllLangAPI} from "@/app/api/siteAPI";
+import {getAllLangAPI} from "@/component/api/siteAPI";
 
 export const useLangStore = create((set, get) => ({
 	allLanguages: [], // Все языки с сервера

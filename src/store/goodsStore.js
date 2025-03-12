@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getGoodsAPI } from "@/app/api/siteAPI";
+import { getGoodsAPI } from "@/component/api/siteAPI";
 
 const useGoodsStore = create((set, get) => ({
 	goods: [],

@@ -1,10 +1,9 @@
 'use client'
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import useCartStore from '@/store/cartStore';
-import { Box, Button, Drawer, Typography, IconButton, TextField, List, ListItem, Alert } from '@mui/material';
+import { Box, Button, Drawer, Typography, IconButton, TextField, Alert } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import useUserStore from "@/store/userStore";
 import {
 	addOplataAPI,
@@ -13,17 +12,15 @@ import {
 	getOrderOneIdAPI,
 	getPromoAPI,
 	getSettingAPI
-} from "@/app/api/siteAPI";
+} from "@/component/api/siteAPI";
 import QuantityInput from "@/component/cart/QuantityInput";
 import {useLang} from "@/context/LangContext";
-const url = process.env.NEXT_PUBLIC_IMG;
+
+
 const Cart = () => {
 
 	// Получаем переводы из контекста
 	const { translations } = useLang();
-
-
-
 	const [open, setOpen] = useState(false);
 	const [promo, setPromo] = useState('');
 	const [message, setMessage] = useState(false);
@@ -63,7 +60,9 @@ const Cart = () => {
 	}, [orderId])
 
 	const addOrder = () => {
-		const orderData = { items, count: totalQuantity, price: totalPrice, user: id, mail: emailF, name: nameF };
+		const orderData = { items, count: totalQuantity,
+			price: totalPrice, user: id, mail: emailF, name: nameF,
+			local:  translations.lang};
 		if (!id && !nameF && emailF) return;
 		addOrderAPI(orderData).then(data => {
 			if (data.success) {

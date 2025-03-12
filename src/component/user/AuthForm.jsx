@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { authUserAPI } from '@/app/api/siteAPI';
+import { authUserAPI } from '@/component/api/siteAPI';
 import useUserStore from '@/store/userStore';
 import ForgotPasswordForm from "@/component/user/ForgotPasswordForm";
+import {useLang} from "@/context/LangContext";
 
 const AuthForm = ({ setModalOpen, setNotification, setSnackbarOpen }) => {
+
+	const { translations } = useLang();
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const { check } = useUserStore();
@@ -15,13 +18,13 @@ const AuthForm = ({ setModalOpen, setNotification, setSnackbarOpen }) => {
 			const data = await authUserAPI({ email, password: pass });
 			if (data.token) {
 				localStorage.setItem('token', data.token);
-				setNotification('Успешно вошли в систему!');
+				setNotification(translations.authInfo1);
 				setSnackbarOpen(true);
 				setModalOpen(false)
 				await check();
 			}
 		} catch (err) {
-			setNotification(err.response?.data?.error || 'Ошибка авторизации');
+			setNotification(err.response?.data?.error || translations.authInfo2);
 			setSnackbarOpen(true);
 		}
 	};
@@ -36,11 +39,11 @@ const AuthForm = ({ setModalOpen, setNotification, setSnackbarOpen }) => {
 					textAlign: "center", mb: 2
 				}}>
 
-					Вход
+					{translations.authVhod}
 				</Typography>
 				<TextField
 					fullWidth
-					label="Email"
+					label={translations.authFormEmail}
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 					sx={{ mb: 2 }}  disabled={getPassActive}
@@ -48,14 +51,15 @@ const AuthForm = ({ setModalOpen, setNotification, setSnackbarOpen }) => {
 				<TextField
 					disabled={getPassActive}
 					fullWidth
-					label="Пароль"
+					label={translations.authFormPass}
 					type="password"
 					value={pass}
 					onChange={(e) => setPass(e.target.value)}
 					sx={{ mb: 2 }}
 				/>
-				<Button  disabled={getPassActive} fullWidth variant="contained" onClick={handleAuth} size="large">
-					Войти
+				<Button  disabled={getPassActive || email === '' || pass === ''} fullWidth variant="contained" onClick={handleAuth} size="large"
+				>
+					{translations.authButton1}
 				</Button>
 			</Box>
 
